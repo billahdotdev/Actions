@@ -11,6 +11,7 @@ import DarkMode from './DarkMode';
 import HackerTyper from './HackerTyper';
 import MusicPlayer from './MusicPlayer';
 import Piano from './Piano';
+import NewsTv from './NewsTv';
 
 
 
@@ -30,6 +31,7 @@ const Works = () => {
       <Project4 />
       <HackerTyper />
       <Piano />
+      <NewsTv />
       <h1 className='example'>I might add more projects later, depending on how things go.</h1>
     </div>
   );
