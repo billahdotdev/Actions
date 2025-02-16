@@ -1,0 +1,12 @@
+.AboutMe {
+  padding: 2rem;
+  text-align: center;
+}
+
+.AboutMe h1 {
+  color: #333;
+}
+
+.AboutMe p {
+  color: #555;
+}

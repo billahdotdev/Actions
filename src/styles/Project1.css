@@ -1,0 +1,362 @@
+.project1-works-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background: linear-gradient(135deg, #e6f0ff 0%, #f0f4f8 100%);
+  margin-top: 2rem;
+}
+
+.project1-works-container h2 {
+  font-size: 2.5rem;
+  color: #2d3748;
+  text-align: center;
+  margin-bottom: 50px;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.project1-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.project1-card {
+  background: #ffffff;
+  padding: 30px 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.project1-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project1-card-content {
+  position: relative;
+  z-index: 2;
+}
+
+.project1-card-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #2d3748;
+}
+
+.project1-card-content p {
+  font-size: 1rem;
+  color: #4a5568;
+}
+
+.project1-card-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.project1-card-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.concept {
+  font-size: large !important;
+  
+}
+
+/* Neomorphic Design Card */
+.neomorphic-design-card {
+  background: #e0e0e0;
+  box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
+}
+
+.neomorphic-design-card:hover {
+  box-shadow: inset 8px 8px 16px #d1d1d1, inset -8px -8px 16px #ffffff;
+}
+
+/* Responsive Design Card */
+.responsive-design-card {
+  background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+  color: #ffffff;
+}
+
+.responsive-design-card .project1-card-effect {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.1) 10px,
+    rgba(255, 255, 255, 0.2) 10px,
+    rgba(255, 255, 255, 0.2) 20px
+  );
+}
+
+.responsive-design-card:hover .project1-card-effect {
+  opacity: 1;
+  animation: project1-moveStripes 20s linear infinite;
+}
+
+@keyframes project1-moveStripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+/* Performance Optimization Card */
+.performance-optimization-card {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  color: #2d3748;
+}
+
+.performance-optimization-card .project1-card-effect {
+  background: radial-gradient(circle, transparent 20%, #fad0c4 20%, #fad0c4 80%, transparent 80%, transparent);
+  background-size: 50px 50px;
+}
+
+.performance-optimization-card:hover .project1-card-effect {
+  opacity: 1;
+  animation: project1-zoom 5s ease infinite;
+}
+
+@keyframes project1-zoom {
+  0%,
+  100% {
+    background-size: 50px 50px;
+  }
+  50% {
+    background-size: 100px 100px;
+  }
+}
+
+/* Interactive Front-End Card */
+.interactive-front-end-card {
+  background: linear-gradient(45deg, #00c6fb 0%, #005bea 100%);
+  color: white;
+}
+
+.interactive-front-end-card .project1-card-effect {
+  background: radial-gradient(
+      circle at 100% 50%,
+      transparent 20%,
+      rgba(255, 255, 255, 0.3) 21%,
+      rgba(255, 255, 255, 0.3) 34%,
+      transparent 35%,
+      transparent
+    ),
+    radial-gradient(
+      circle at 0% 50%,
+      transparent 20%,
+      rgba(255, 255, 255, 0.3) 21%,
+      rgba(255, 255, 255, 0.3) 34%,
+      transparent 35%,
+      transparent
+    )
+    0 -50px;
+  background-size: 75px 100px;
+}
+
+.interactive-front-end-card:hover .project1-card-effect {
+  opacity: 1;
+  animation: project1-slidePattern 10s linear infinite;
+}
+
+@keyframes project1-slidePattern {
+  0% {
+    background-position: 0 0, 0 -50px;
+  }
+  100% {
+    background-position: 150px 0, 150px -50px;
+  }
+}
+
+/* Progressive Web Apps Card */
+.progressive-web-apps-card {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.progressive-web-apps-card .project1-card-effect {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 60px 60px;
+}
+
+.progressive-web-apps-card:hover .project1-card-effect {
+  opacity: 1;
+  animation: project1-stripes 3s linear infinite;
+}
+
+@keyframes project1-stripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 60px 60px;
+  }
+}
+
+/* Accessibility Card */
+.accessibility-card {
+  background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+  color: #2d3748;
+}
+
+.accessibility-card .project1-card-effect {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 20%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.2) 20%, transparent 20%);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+.accessibility-card:hover .project1-card-effect {
+  opacity: 1;
+  animation: project1-pulse 2s ease-in-out infinite;
+}
+
+@keyframes project1-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Dark Mode Design Card */
+.dark-mode-design-card {
+  background: linear-gradient(135deg, #434343 0%, #000000 100%);
+  color: #ffffff;
+  transition: all 0.5s ease;
+}
+
+.dark-mode-design-card:hover {
+  background: linear-gradient(135deg, #000000 0%, #434343 100%);
+}
+
+.dark-mode-design-card .project1-card-effect {
+  background: radial-gradient(circle, #ffffff 10%, transparent 10%),
+    radial-gradient(circle, #ffffff 10%, transparent 10%);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+}
+
+.dark-mode-design-card:hover {
+  background: linear-gradient(135deg, #000000 0%, #434343 100%);
+}
+
+.dark-mode-design-card .project1-card-effect {
+  background: radial-gradient(circle, #ffffff 10%, transparent 10%),
+    radial-gradient(circle, #ffffff 10%, transparent 10%);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+}
+
+.dark-mode-design-card:hover .project1-card-effect {
+  opacity: 0.1;
+  animation: project1-twinkle 2s ease-in-out infinite;
+}
+
+@keyframes project1-twinkle {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Hover and Focus Effects */
+.project1-card:hover,
+.project1-card:focus {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+.project1-card:focus {
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5), 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .project1-works-container h2 {
+    font-size: 2rem;
+  }
+
+  .project1-cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .project1-card {
+    padding: 25px 15px;
+  }
+
+  .project1-card-content h3 {
+    font-size: 1.3rem;
+  }
+
+  .project1-card-content p {
+    font-size: 0.9rem;
+  }
+
+  .project1-card-icon {
+    font-size: 2.5rem;
+  }
+}
+
+/* Large Screen Adjustments */
+@media (min-width: 1200px) {
+  .project1-cards-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .project1-card {
+    padding: 40px 25px;
+  }
+
+  .project1-card-content h3 {
+    font-size: 1.8rem;
+  }
+
+  .project1-card-content p {
+    font-size: 1.1rem;
+  }
+
+  .project1-card-icon {
+    font-size: 4rem;
+  }
+}

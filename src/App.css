@@ -1,0 +1,6 @@
+.app {
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(to bottom, #eaf4fc, #f9f9f9);
+  color: #333;
+  min-height: 100vh;
+}

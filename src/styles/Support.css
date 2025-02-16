@@ -1,0 +1,163 @@
+.support-container {
+  --primary-color: #0075a8;
+  --secondary-color: #2575fc;
+  --background-color: #e0e5ec;
+  --text-color: #333;
+  --card-background: #e0e5ec;
+  --shadow-color: #a3b1c6;
+  --highlight-color: #ffffff;
+
+  max-width: 1200px;
+  margin: 7rem auto 0;
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  margin-bottom: 2rem;
+}
+
+.support-container .support-title {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 3px 3px 6px var(--shadow-color), -3px -3px 6px var(--highlight-color);
+}
+
+.support-container .support-date {
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+  text-shadow: 1px 1px 2px var(--shadow-color), -1px -1px 2px var(--highlight-color);
+}
+
+.support-container .support-intro,
+.support-container .support-outro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px var(--shadow-color), -1px -1px 2px var(--highlight-color);
+}
+
+.support-container .support-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.support-container .support-card {
+  background-color: var(--card-background);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 8px 8px 16px var(--shadow-color), -8px -8px 16px var(--highlight-color);
+  transition: transform 0.3s ease;
+}
+
+.support-container .support-card:hover {
+  transform: translateY(-5px);
+}
+
+.support-container .support-card-title {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px var(--shadow-color), -2px -2px 4px var(--highlight-color);
+}
+
+.support-container .support-card-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px var(--shadow-color), -1px -1px 2px var(--highlight-color);
+}
+
+.support-container .support-card-content ul {
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.support-container .support-card-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .support-container {
+    padding: 1rem;
+    margin-top: 5rem;
+  }
+
+  .support-container .support-title {
+    font-size: 3rem;
+  }
+
+  .support-container .support-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1200px) {
+  .support-container {
+    padding: 3rem;
+  }
+
+  .support-container .support-title {
+    font-size: 5rem;
+  }
+
+  .support-container .support-card-title {
+    font-size: 1.8rem;
+  }
+
+  .support-container .support-card-content {
+    font-size: 1.1rem;
+  }
+}
+
+/* Animation for cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.support-container .support-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.support-container .support-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.support-container .support-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.support-container .support-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.support-container .support-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.support-container .support-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.support-container .support-card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+.support-container .support-card:nth-child(7) {
+  animation-delay: 0.7s;
+}
+.support-container .support-card:nth-child(8) {
+  animation-delay: 0.8s;
+}
+
