@@ -44,17 +44,8 @@ const GitHubProjects = () => {
         <div className="projects-grid">
           {projects.map((project) => (
             <article key={project.id} className="project-card">
-              <div className="device-wrapper">
-                <div className="device-frame">
-                  <div className="device-screen">
-                    <iframe src={project.url} title={project.title} className="website-preview" loading="lazy" />
-                  </div>
-                  <div className="device-stripe" />
-                  <div className="device-header" />
-                  <div className="device-sensors" />
-                  <div className="device-btns" />
-                  <div className="device-power" />
-                </div>
+              <div className="project-preview">
+                <iframe src={project.url} title={project.title} className="website-preview" loading="lazy" />
               </div>
 
               <div className="project-content">
