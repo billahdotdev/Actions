@@ -11,9 +11,9 @@ const Hero = () => {
           </div>
           <div className="hero-text">
             <h1 className="hero-title">
-              Digital Marketing
+              Hello,
               <br />
-              <span className="hero-title-accent">Portfolio</span>
+              <span className="hero-title-accent">I'm Turjoy</span>
             </h1>
             <p className="hero-subtitle">
               Crafting data-driven digital strategies that deliver measurable
