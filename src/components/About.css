@@ -1,0 +1,44 @@
+.about-title {
+  font-size: 4rem;
+  font-weight: 300;
+  margin-bottom: 3rem;
+  color: white;
+}
+
+.about-content {
+  max-width: 800px;
+}
+
+.about-text {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 3rem;
+  color: #e5e7eb;
+}
+
+.about-line {
+  height: 4px;
+  width: 100%;
+  background-color: #8b5cf6;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 3rem;
+  }
+
+  .about-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-title {
+    font-size: 2.5rem;
+  }
+
+  .about-text {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,46 @@
+.header {
+  background-color: #f3f4f6;
+  padding: 20px 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header-title {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #8b5cf6;
+  margin: 0;
+}
+
+.header-line {
+  height: 4px;
+  width: 200px;
+  background-color: #8b5cf6;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .header-line {
+    width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1rem;
+  }
+
+  .header-line {
+    width: 100px;
+  }
+}

@@ -1,0 +1,44 @@
+.social-media-projects {
+  text-align: center;
+}
+
+.social-media-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.brand-logo img {
+  max-width: 200px;
+  height: auto;
+}
+
+.phone-mockups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.phone-mockup img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .phone-mockups {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .phone-mockups {
+    grid-template-columns: 1fr;
+  }
+}
