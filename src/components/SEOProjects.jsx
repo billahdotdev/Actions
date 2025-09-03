@@ -7,7 +7,7 @@ const SEOProjects = () => {
       title: 'E-commerce Website Optimization',
       description:
         'Increased organic traffic by 150% and improved search rankings for 200+ keywords through comprehensive on-page and technical SEO optimization.',
-      image: '/ecommerce-analytics-dashboard.png',
+      image: './ecom.png',
       metrics: [
         '150% Traffic Increase',
         '200+ Keywords Ranked',
@@ -20,7 +20,7 @@ const SEOProjects = () => {
       title: 'Local Business SEO Campaign',
       description:
         'Boosted local search visibility for a restaurant chain, achieving #1 rankings for key local keywords and increasing foot traffic by 80%.',
-      image: '/local-business-google-maps-ranking.png',
+      image: './local.png',
       metrics: [
         '#1 Local Rankings',
         '80% Foot Traffic Increase',
@@ -33,7 +33,7 @@ const SEOProjects = () => {
       title: 'SaaS Platform Content Strategy',
       description:
         'Developed and executed a content-driven SEO strategy that generated 500+ high-quality backlinks and doubled organic lead generation.',
-      image: '/saas-platform-content-marketing-analytics.png',
+      image: './sass.png',
       metrics: [
         '500+ Quality Backlinks',
         '200% Lead Generation',
