@@ -4,21 +4,21 @@ const Tools = () => {
   const tools = [
     {
       name: 'Google Analytics',
-      logo: '/google-analytics-logo.png',
+      logo: './analytics.svg',
       category: 'Analytics',
     },
     {
       name: 'Google Search Console',
-      logo: '/google-search-console-logo.png',
+      logo: './search_console.svg',
       category: 'SEO',
     },
     {
       name: 'Tag Manager',
-      logo: '/google-tag-manager-logo.png',
+      logo: './tag-manager.svg',
       category: 'Analytics',
     },
-    { name: 'SEMrush', logo: '/semrush-logo.png', category: 'SEO' },
-    { name: 'Ahrefs', logo: '/ahrefs-logo.png', category: 'SEO' },
+    { name: 'SEMrush', logo: './semrush_logo.svg', category: 'SEO' },
+    { name: 'Ahrefs', logo: './ahrefs.svg', category: 'SEO' },
     { name: 'MOZ', logo: '/moz-seo-logo.png', category: 'SEO' },
     {
       name: 'Screaming Frog',
