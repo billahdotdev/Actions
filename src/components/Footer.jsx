@@ -92,7 +92,7 @@ const Footer = () => {
               <span className="stat-label">Years Experience</span>
             </div>
             <div className="stat-item">
-              <span className="stat-number">90+</span>
+              <span className="stat-number">89</span>
               <span className="stat-label">Projects Completed</span>
             </div>
             <div className="stat-item">
