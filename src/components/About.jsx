@@ -18,9 +18,9 @@ const About = () => {
             <h3 className="credentials-title">Credentials & Learning</h3>
             <ul className="credentials-list">
               <li>
-                🎓 Computer Science & Engineering - BUBT Dhaka, Bangladesh
+                🎓 Computer Science & Engineering - BUBT, Dhaka, Bangladesh
               </li>
-              <li>📜 Digital Marketing Course - Google</li>
+              <li>📜 Google's Digital Marketing & E-commerce Certificate</li>
               <li>📚 Continuously learning latest marketing trends</li>
             </ul>
           </div>
