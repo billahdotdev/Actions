@@ -31,11 +31,7 @@ const About = () => {
             >
               Get Free Consultation
             </a>
-            <a
-              href="/src/assets/resume.pdf"
-              download
-              className="cta-button resume-btn"
-            >
+            <a href="./resume.pdf" download className="cta-button resume-btn">
               Download My Resume
             </a>
           </div>
