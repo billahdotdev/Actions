@@ -7,12 +7,38 @@ const About = () => {
         <h2 className="about-title">About Me</h2>
         <div className="about-content">
           <p className="about-text">
-            Experienced Digital Marketing Specialist with over 5 years of
-            success in developing and executing ROI-driven strategies across
-            SEO, SEM, Social Media, Email, and Content Marketing. Proven track
-            record of boosting brand visibility, website traffic, and
-            conversions through data-driven insights and innovative campaigns.
+            I'm a Digital Marketing Specialist who brings a Computer Science
+            mindset to the world of brand visibility and conversions. I don't
+            just run campaigns; I build data-driven systems designed for
+            repeatable success. My mission is to remove the guesswork and
+            deliver tangible results and exceptional ROI that fuel business
+            growth.
           </p>
+          <div className="about-credentials">
+            <h3 className="credentials-title">Credentials & Learning</h3>
+            <ul className="credentials-list">
+              <li>
+                🎓 Computer Science & Engineering - BUBT Dhaka, Bangladesh
+              </li>
+              <li>📜 Digital Marketing Course - Google</li>
+              <li>📚 Continuously learning latest marketing trends</li>
+            </ul>
+          </div>
+          <div className="about-cta">
+            <a
+              href="mailto:turjoy@gmail.com"
+              className="cta-button consultation-btn"
+            >
+              Get Free Consultation
+            </a>
+            <a
+              href="/src/assets/resume.pdf"
+              download
+              className="cta-button resume-btn"
+            >
+              Download My Resume
+            </a>
+          </div>
           <div className="about-line"></div>
         </div>
       </div>

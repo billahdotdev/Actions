@@ -58,7 +58,6 @@
 
 .hero-image img {
   width: 100%;
-
   height: auto;
   border-radius: 20px;
   object-fit: cover;
@@ -125,6 +124,136 @@
   animation: fadeInUp 1s ease-out 0.3s both;
 }
 
+/* Added social media buttons styling */
+.social-media-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.social-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+.social-btn svg {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+  z-index: 2;
+  position: relative;
+}
+
+.social-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.social-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.social-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.social-btn:hover::before {
+  transform: scale(1.1);
+}
+
+/* Individual social media button colors */
+.social-btn.facebook {
+  background: linear-gradient(135deg, #1877f2, #42a5f5);
+  color: white;
+}
+
+.social-btn.instagram {
+  background: linear-gradient(135deg, #e4405f, #f77737, #fccc63);
+  color: white;
+}
+
+.social-btn.twitter {
+  background: linear-gradient(135deg, #1da1f2, #0d8bd9);
+  color: white;
+}
+
+.social-btn.linkedin {
+  background: linear-gradient(135deg, #0077b5, #00a0dc);
+  color: white;
+}
+
+.social-btn.youtube {
+  background: linear-gradient(135deg, #ff0000, #ff4444);
+  color: white;
+}
+
+/* Added styling for achievement statistics section */
+.hero-stats {
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0;
+  animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.08) 0%,
+    rgba(99, 102, 241, 0.05) 100%
+  );
+  border-radius: 15px;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  flex: 1;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  /* Made text color black with !important to ensure visibility */
+  color: #000000 !important;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 @media (max-width: 968px) {
   .hero-content {
     grid-template-columns: 1fr;
@@ -139,6 +268,42 @@
   /* Adjusted subtitle for tablet */
   .hero-subtitle {
     font-size: 1.1rem;
+  }
+
+  /* Responsive adjustments for social buttons */
+  .social-media-buttons {
+    justify-content: center;
+    gap: 0.8rem;
+  }
+
+  .social-btn {
+    width: 45px;
+    height: 45px;
+  }
+
+  .social-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Responsive adjustments for stats section */
+  .hero-stats {
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .stat-item {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    /* Ensuring black text color is maintained on tablet with !important */
+    color: #000000 !important;
   }
 }
 
@@ -170,5 +335,25 @@
   .hero-subtitle {
     font-size: 0.9rem;
     padding: 0 1rem;
+  }
+
+  /* Small mobile adjustments */
+  .hero-stats {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .stat-item {
+    padding: 1rem;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    /* Ensuring black text color is maintained on mobile with !important */
+    color: #000000 !important;
   }
 }

@@ -16,6 +16,90 @@
   color: #e5e7eb;
 }
 
+/* Updated CTA section for two buttons side by side */
+.about-cta {
+  margin-bottom: 3rem;
+  text-align: center;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Added credentials section styling */
+.about-credentials {
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 12px;
+  border-left: 4px solid #8b5cf6;
+}
+
+.credentials-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #8b5cf6;
+  margin-bottom: 1rem;
+}
+
+.credentials-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.credentials-list li {
+  font-size: 1.1rem;
+  color: #e5e7eb;
+  margin-bottom: 0.8rem;
+  padding-left: 0.5rem;
+}
+
+.cta-text {
+  font-size: 1.1rem;
+  color: #e5e7eb;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+/* Enhanced button styling with different colors for each CTA */
+.cta-button {
+  display: inline-block;
+  text-decoration: none;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+.consultation-btn {
+  background-color: #8b5cf6;
+  color: white;
+}
+
+.consultation-btn:hover {
+  background-color: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.resume-btn {
+  background-color: transparent;
+  color: #8b5cf6;
+  border: 2px solid #8b5cf6;
+}
+
+.resume-btn:hover {
+  background-color: #8b5cf6;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+}
+
 .about-line {
   height: 4px;
   width: 100%;
@@ -31,6 +115,23 @@
   .about-text {
     font-size: 1.1rem;
   }
+
+  /* Stack buttons vertically on mobile */
+  .about-cta {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cta-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    min-width: 160px;
+  }
+
+  .credentials-list li {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -40,5 +141,15 @@
 
   .about-text {
     font-size: 1rem;
+  }
+
+  .cta-button {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    min-width: 140px;
+  }
+
+  .credentials-title {
+    font-size: 1.2rem;
   }
 }
