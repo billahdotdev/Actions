@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>⚡ Lead Engine v2 — Survival CRM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e17;--bg2:#0f1420;--bg3:#151c2c;--bg4:#1a2235;
+  --border:#1e2a40;--border2:#253047;
+  --text:#e2e8f5;--muted:#6b7a99;--dim:#3a4a6b;
+  --green:#00e5a0;--green2:#00b87a;--green-bg:#001f15;
+  --red:#ff4757;--red-bg:#1f0a0d;
+  --amber:#f59e0b;--amber-bg:#1a1200;
+  --blue:#3b82f6;--blue-bg:#0a1628;
+  --purple:#a855f7;--purple-bg:#150b1f;
+  --cyan:#06b6d4;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+}
+body{font-family:var(--sans);font-size:13px;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+a{color:inherit;text-decoration:none}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── LAYOUT ── */
+.app{max-width:1200px;margin:0 auto;padding:12px 16px}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;background:var(--bg2);
+  border:1px solid var(--border);border-bottom:2px solid var(--green);
+  margin-bottom:10px;gap:12px;flex-wrap:wrap;
+}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-brand h1{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--green);letter-spacing:.05em}
+.topbar-brand span{font-size:10px;color:var(--muted);font-family:var(--mono)}
+.topbar-right{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:2px;margin-bottom:10px;background:var(--bg2);border:1px solid var(--border);padding:4px;width:fit-content}
+.tab{padding:5px 14px;cursor:pointer;font-size:12px;font-family:var(--mono);font-weight:600;color:var(--muted);border:1px solid transparent;letter-spacing:.04em;transition:all .12s;white-space:nowrap}
+.tab.active{background:var(--green);color:#000;border-color:var(--green)}
+.tab:hover:not(.active){color:var(--text);border-color:var(--border2)}
+
+/* ── ALERT BANNER ── */
+.alert-banner{
+  background:var(--red-bg);border:1px solid var(--red);border-left:3px solid var(--red);
+  padding:10px 16px;margin-bottom:10px;display:flex;align-items:center;gap:10px;
+  font-size:12px;font-family:var(--mono);color:var(--red);flex-wrap:wrap;
+}
+.alert-banner strong{color:#fff}
+
+/* ── STATS GRID ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:10px}
+.stat{background:var(--bg2);border:1px solid var(--border);padding:12px 14px;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat.fire::before{background:var(--red)}
+.stat.go::before{background:var(--green)}
+.stat.warn::before{background:var(--amber)}
+.stat.info::before{background:var(--blue)}
+.stat.purple::before{background:var(--purple)}
+.stat.cyan::before{background:var(--cyan)}
+.stat .label{font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.stat .val{font-size:24px;font-weight:700;font-family:var(--mono);line-height:1}
+.stat.fire .val{color:var(--red)}
+.stat.go .val{color:var(--green)}
+.stat.warn .val{color:var(--amber)}
+.stat.info .val{color:var(--blue)}
+.stat.purple .val{color:var(--purple)}
+.stat.cyan .val{color:var(--cyan)}
+
+/* ── CARD ── */
+.card{background:var(--bg2);border:1px solid var(--border);padding:16px;margin-bottom:10px}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-head h2{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.form-grid.cols4{grid-template-columns:repeat(4,1fr)}
+.form-grid.cols2{grid-template-columns:repeat(2,1fr)}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10px;color:var(--muted);font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.fg input,.fg select,.fg textarea{
+  background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  padding:7px 10px;font-size:13px;font-family:var(--sans);outline:none;
+  transition:border-color .12s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--green)}
+.fg select option{background:var(--bg3)}
+.fg textarea{resize:vertical;min-height:58px}
+.phone-wrap{position:relative}
+.phone-prefix{
+  position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  color:var(--green);font-weight:700;font-size:13px;font-family:var(--mono);pointer-events:none
+}
+.phone-input{padding-left:26px!important}
+
+/* ── BUTTONS ── */
+.btn{padding:7px 14px;border:1px solid transparent;cursor:pointer;font-size:12px;font-family:var(--mono);font-weight:700;letter-spacing:.04em;transition:all .12s;white-space:nowrap}
+.btn-green{background:var(--green);color:#000;border-color:var(--green)}
+.btn-green:hover{background:var(--green2);border-color:var(--green2)}
+.btn-ghost{background:transparent;color:var(--muted);border-color:var(--border2)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border2)}
+.btn-danger{background:transparent;color:var(--red);border-color:var(--red)}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber)}
+.btn-amber:hover{background:var(--amber);color:#000}
+.btn-sm{padding:3px 9px;font-size:11px}
+.btn-wa{background:#128C7E;color:#fff;border:none;padding:5px 10px;font-size:11px;font-family:var(--mono);font-weight:700;cursor:pointer}
+.btn-wa:hover{background:#075E54}
+.flex-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
+th{
+  text-align:left;padding:7px 10px;font-size:10px;color:var(--muted);
+  font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;
+  border-bottom:1px solid var(--border2);white-space:nowrap;background:var(--bg3)
+}
+td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:var(--bg3)}
+tr.row-today td{background:#1a0a0a}
+tr.row-overdue td{background:#150806}
+tr.row-closed td{background:#021208}
+.note-cell{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+
+/* ── BADGES ── */
+.badge{display:inline-block;padding:2px 7px;font-size:10px;font-weight:700;font-family:var(--mono);letter-spacing:.04em;border:1px solid transparent}
+.b-new{background:var(--blue-bg);color:var(--blue);border-color:#1e3a6e}
+.b-contacted{background:var(--amber-bg);color:var(--amber);border-color:#3a2800}
+.b-replied{background:#0a1a2a;color:#79c0ff;border-color:#1a3050}
+.b-meeting{background:var(--purple-bg);color:var(--purple);border-color:#2a1040}
+.b-proposal{background:#021208;color:var(--green);border-color:#0a3020}
+.b-closed{background:#021208;color:var(--green);border-color:var(--green2)}
+.b-dead{background:#0f0f0f;color:#444;border-color:#222}
+.b-cold{background:#0f0f0f;color:var(--muted);border-color:#222}
+.b-entry{background:#0a1a1a;color:var(--cyan);border-color:#102830}
+.b-standard{background:var(--blue-bg);color:var(--blue);border-color:#1e3a6e}
+.b-premium{background:var(--purple-bg);color:var(--purple);border-color:#2a1040}
+.b-enterprise{background:#1a0a00;color:#f0883e;border-color:#3a1800}
+
+/* ── ALERT CELLS ── */
+.alert-today{color:var(--red);font-weight:700;font-family:var(--mono);font-size:11px}
+.alert-overdue{color:var(--amber);font-weight:700;font-family:var(--mono);font-size:11px}
+.alert-ok{color:var(--dim);font-size:11px;font-family:var(--mono)}
+
+/* ── SEARCH BAR ── */
+.search-bar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.search-bar input{flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:7px 10px;font-size:13px;outline:none}
+.search-bar input:focus{border-color:var(--green)}
+.search-bar select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:7px 10px;font-size:12px;outline:none;font-family:var(--mono)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-top:2px solid var(--green);padding:20px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto}
+.modal h3{font-family:var(--mono);font-size:13px;font-weight:700;margin-bottom:16px;color:var(--text)}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;border-top:1px solid var(--border);padding-top:14px}
+
+/* ── FUNNEL ── */
+.funnel{display:flex;flex-direction:column;gap:8px}
+.funnel-row{display:flex;align-items:center;gap:10px}
+.funnel-label{width:80px;font-size:11px;font-family:var(--mono);color:var(--muted);flex-shrink:0}
+.funnel-bar-wrap{flex:1;background:var(--bg3);height:18px;overflow:hidden}
+.funnel-bar{height:100%;display:flex;align-items:center;padding-left:8px;font-size:10px;font-weight:700;font-family:var(--mono);color:#000;transition:width .4s}
+.funnel-count{width:28px;text-align:right;font-size:12px;font-weight:700;font-family:var(--mono)}
+.funnel-bdt{width:80px;text-align:right;font-size:11px;color:var(--muted);font-family:var(--mono)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:20px;right:20px;padding:10px 18px;font-size:12px;font-family:var(--mono);font-weight:700;z-index:9999;border:1px solid;animation:slideUp .2s ease}
+.toast-ok{background:var(--green-bg);color:var(--green);border-color:var(--green)}
+.toast-err{background:var(--red-bg);color:var(--red);border-color:var(--red)}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* ── COPY BTN ── */
+.copy-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--blue);padding:2px 8px;font-size:10px;font-family:var(--mono);cursor:pointer}
+.copy-btn:hover{border-color:var(--blue)}
+
+/* ── SPEED COLOR ── */
+.speed-bad{color:var(--red)}
+.speed-mid{color:var(--amber)}
+.speed-good{color:var(--green)}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:var(--border);margin:12px 0}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:48px;color:var(--muted);font-family:var(--mono);font-size:12px}
+
+/* ── BACKUP SECTION ── */
+.backup-area{background:var(--bg3);border:1px solid var(--border);padding:12px;font-family:var(--mono);font-size:11px;color:var(--muted);width:100%;min-height:80px;resize:vertical;outline:none}
+.backup-area:focus{border-color:var(--green)}
+
+/* ── MOBILE ── */
+@media(max-width:600px){
+  .form-grid{grid-template-columns:1fr 1fr}
+  .form-grid.cols4{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .tabs{width:100%;overflow-x:auto}
+  .app{padding:8px}
+}
+@media(max-width:400px){
+  .form-grid{grid-template-columns:1fr}
+}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+</style>
+</head>
+<body>
+<div class="app" id="root"></div>
+
+<script>
+'use strict';
+// ═══════════════════════════════════════════════
+//  LEAD ENGINE v2 — Standalone Survival CRM
+//  FIX LOG:
+//  ✅ #1 WhatsApp stored as plain string (no formula risk)
+//  ✅ #2 Follow-up date: manual input OR auto +3 days
+//  ✅ #3 Alert: TODAY / OVERDUE / — based on followUp vs today
+//  ✅ #4 Dashboard counts correct fields
+//  ✅ #5 Delete confirmation + JSON backup/restore
+// ═══════════════════════════════════════════════
+
+const STORE_KEY = 'lead_engine_v2';
+const STATUS_LIST = ['New','Contacted','Replied','Meeting','Proposal','Closed','Dead','Cold'];
+const TIER_LIST   = ['Entry','Standard','Premium','Enterprise'];
+const BADGE = {
+  New:'b-new', Contacted:'b-contacted', Replied:'b-replied', Meeting:'b-meeting',
+  Proposal:'b-proposal', Closed:'b-closed', Dead:'b-dead', Cold:'b-cold',
+  Entry:'b-entry', Standard:'b-standard', Premium:'b-premium', Enterprise:'b-enterprise'
+};
+const FUNNEL_COLORS = {
+  New:'#3b82f6', Contacted:'#f59e0b', Replied:'#79c0ff',
+  Meeting:'#a855f7', Proposal:'#00e5a0', Closed:'#00b87a', Dead:'#333', Cold:'#2a2a2a'
+};
+
+// ── Utilities ──────────────────────────────────
+function todayStr(){
+  const d=new Date();
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+function pad(n){return String(n).padStart(2,'0')}
+function addDays(s,n){
+  if(!s) return '';
+  const d=new Date(s); d.setDate(d.getDate()+n);
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+function fmtDate(s){if(!s)return'—';const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;}
+function fmtBDT(n){return n?Number(n).toLocaleString('en-BD'):'—';}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── FIX #1: WhatsApp stored/displayed as plain text ──
+// Strips leading +, stores digits only with country code
+function normalizeWA(raw){
+  raw = String(raw||'').trim();
+  // Remove = sign if user pasted from Excel
+  raw = raw.replace(/^=+/,'');
+  // Remove all non-digits
+  raw = raw.replace(/\D/g,'');
+  // Ensure it starts with 880 (Bangladesh)
+  if(raw.startsWith('880') && raw.length >= 12) return raw;
+  if(raw.startsWith('01') && raw.length === 11) return '880' + raw;
+  if(raw.startsWith('1') && raw.length === 10) return '880' + raw; // edge case
+  return raw; // return as-is for other formats
+}
+function displayWA(stored){
+  if(!stored) return '';
+  return '+' + stored;
+}
+
+// ── FIX #3: Alert logic ──
+function getAlert(lead){
+  const fu = lead.followUp;
+  if(!fu) return '';
+  const t = todayStr();
+  if(fu < t) return 'OVERDUE';
+  if(fu === t) return 'TODAY';
+  return '—';
+}
+
+// ── FIX #2: Follow-up auto-calc ──
+function autoFollowUp(lead){
+  // Use manual followUp if set, else lastContact + 3 days
+  if(lead.followUp) return lead.followUp;
+  if(lead.lastContact) return addDays(lead.lastContact, 3);
+  return '';
+}
+
+// ── Storage ────────────────────────────────────
+function loadLeads(){
+  try{const r=localStorage.getItem(STORE_KEY);return r?JSON.parse(r):[];}
+  catch(e){return [];}
+}
+function saveLeads(leads){
+  try{localStorage.setItem(STORE_KEY,JSON.stringify(leads));}
+  catch(e){toast('Storage full! Export backup now.','err');}
+}
+
+// ── State ──────────────────────────────────────
+let S = {
+  leads: loadLeads(),
+  tab: 'dashboard',
+  search: '',
+  filterStatus: '',
+  filterTier: '',
+  editLead: null,
+  showBackup: false,
+  form: emptyForm(),
+  _tpl: null,
+};
+
+function emptyForm(){
+  return {id:'',name:'',industry:'',whatsapp:'',website:'',speed:'',
+    pixel:'?',capi:'?',auto:'?',budget:'',tier:'Standard',loomLink:'',
+    lastContact:todayStr(),followUp:'',status:'New',dealBDT:'',notes:''};
+}
+
+// ── Render ─────────────────────────────────────
+function render(){
+  document.getElementById('root').innerHTML = buildApp();
+  attachEvents();
+}
+
+function buildApp(){
+  const today = todayStr();
+  const todayAlerts = S.leads.filter(l=>{
+    const fu = l.followUp || autoFollowUp(l);
+    return fu <= today && l.status !== 'Closed' && l.status !== 'Dead';
+  });
+  const overdueCount = S.leads.filter(l=>{
+    const fu = l.followUp || autoFollowUp(l);
+    return fu && fu < today && l.status !== 'Closed' && l.status !== 'Dead';
+  }).length;
+  const dueToday = S.leads.filter(l=>{
+    const fu = l.followUp || autoFollowUp(l);
+    return fu === today && l.status !== 'Closed' && l.status !== 'Dead';
+  }).length;
+
+  let html = `<div class="topbar">
+    <div class="topbar-brand">
+      <h1>⚡ LEAD ENGINE v2</h1>
+      <span>${todayStr().split('-').reverse().join('/')} &nbsp;·&nbsp; ${S.leads.length} LEADS</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-amber btn-sm" id="btn-backup-open">💾 BACKUP/RESTORE</button>
+      <button class="btn btn-ghost btn-sm" id="btn-export-csv">↓ CSV</button>
+    </div>
+  </div>`;
+
+  if(todayAlerts.length > 0){
+    const names = todayAlerts.slice(0,3).map(l=>`<strong>${esc(l.name)}</strong>`).join(', ');
+    const extra = todayAlerts.length > 3 ? ` +${todayAlerts.length-3} more` : '';
+    html += `<div class="alert-banner">
+      ▲ ${dueToday > 0 ? dueToday + ' DUE TODAY' : ''}${dueToday>0 && overdueCount>0 ? ' · ' : ''}${overdueCount > 0 ? overdueCount + ' OVERDUE' : ''}
+      &nbsp;→&nbsp; ${names}${extra}
+    </div>`;
+  }
+
+  html += `<div class="tabs">
+    <div class="tab ${S.tab==='dashboard'?'active':''}" data-tab="dashboard">DASHBOARD</div>
+    <div class="tab ${S.tab==='leads'?'active':''}" data-tab="leads">LEADS (${S.leads.length})</div>
+    <div class="tab ${S.tab==='pipeline'?'active':''}" data-tab="pipeline">PIPELINE</div>
+    <div class="tab ${S.tab==='messages'?'active':''}" data-tab="messages">TEMPLATES</div>
+  </div>`;
+
+  if(S.tab==='dashboard')  html += buildDashboard(todayAlerts);
+  else if(S.tab==='leads') html += buildLeads();
+  else if(S.tab==='pipeline') html += buildPipeline();
+  else if(S.tab==='messages') html += buildMessages();
+
+  if(S.editLead !== null) html += buildEditModal();
+  if(S.showBackup) html += buildBackupModal();
+  return html;
+}
+
+// ── FIX #4: Dashboard counts using correct logic ──
+function buildDashboard(todayAlerts){
+  const leads = S.leads;
+  const today = todayStr();
+  const closed   = leads.filter(l=>l.status==='Closed');
+  const dead     = leads.filter(l=>l.status==='Dead');
+  const meeting  = leads.filter(l=>l.status==='Meeting');
+  const proposal = leads.filter(l=>l.status==='Proposal');
+  const active   = leads.filter(l=>l.status!=='Dead'&&l.status!=='Closed'&&l.status!=='Cold');
+  const revenue  = closed.reduce((s,l)=>s+(Number(l.dealBDT)||0),0);
+  const pipeline = leads.filter(l=>l.status!=='Dead').reduce((s,l)=>s+(Number(l.dealBDT)||0),0);
+  const winRate  = closed.length+dead.length > 0
+    ? Math.round(closed.length/(closed.length+dead.length)*100) : 0;
+  // Correct follow-up count: leads where followUp <= today (not just status)
+  const followUpsNow = leads.filter(l=>{
+    const fu = l.followUp || autoFollowUp(l);
+    return fu && fu <= today && l.status !== 'Closed' && l.status !== 'Dead';
+  }).length;
+
+  let html = `<div class="stats">
+    <div class="stat fire"><div class="label">Follow-ups Now</div><div class="val">${followUpsNow}</div></div>
+    <div class="stat info"><div class="label">Active Leads</div><div class="val">${active.length}</div></div>
+    <div class="stat warn"><div class="label">Meetings Set</div><div class="val">${meeting.length}</div></div>
+    <div class="stat purple"><div class="label">Proposals Out</div><div class="val">${proposal.length}</div></div>
+    <div class="stat go"><div class="label">Closed (BDT)</div><div class="val">${revenue>0?'৳'+fmtBDT(revenue):'০'}</div></div>
+    <div class="stat cyan"><div class="label">Pipeline (BDT)</div><div class="val">${pipeline>0?'৳'+fmtBDT(pipeline):'০'}</div></div>
+    <div class="stat go"><div class="label">Win Rate</div><div class="val">${winRate}%</div></div>
+  </div>`;
+
+  // Due today table
+  if(todayAlerts.length > 0){
+    html += `<div class="card"><div class="card-head"><h2>▲ ACT NOW — Follow-ups Due</h2></div>
+    <div class="table-wrap"><table><thead><tr>
+      <th>Business</th><th>WhatsApp</th><th>Status</th><th>Follow-up</th><th>Alert</th><th>Notes</th><th></th>
+    </tr></thead><tbody>`;
+    todayAlerts.forEach(l=>{
+      const fu = l.followUp || autoFollowUp(l);
+      const alert = getAlert({...l, followUp: fu});
+      const wa = l.whatsapp;
+      html += `<tr class="row-today">
+        <td><strong>${esc(l.name)}</strong></td>
+        <td><a href="https://wa.me/${wa}" target="_blank" class="btn btn-wa btn-sm">📱 ${esc(displayWA(wa))}</a></td>
+        <td><span class="badge ${BADGE[l.status]||''}">${l.status}</span></td>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${fmtDate(fu)}</td>
+        <td class="${alert==='TODAY'?'alert-today':'alert-overdue'}">${alert==='TODAY'?'▲ TODAY':'⚠ OVERDUE'}</td>
+        <td class="note-cell">${esc(l.notes||'')}</td>
+        <td><button class="btn btn-ghost btn-sm" data-edit="${l.id}">Edit</button></td>
+      </tr>`;
+    });
+    html += `</tbody></table></div></div>`;
+  }
+
+  html += buildQuickAdd();
+  return html;
+}
+
+function buildQuickAdd(){
+  const f = S.form;
+  return `<div class="card"><div class="card-head"><h2>+ Quick Add Lead</h2></div>
+  <div class="form-grid" style="margin-bottom:10px">
+    <div class="fg"><label>Business Name *</label><input id="f-name" value="${esc(f.name)}" placeholder="e.g. Dream Creation"></div>
+    <div class="fg"><label>Industry</label><input id="f-industry" value="${esc(f.industry)}" placeholder="e.g. E-commerce"></div>
+    <div class="fg"><label>WhatsApp (+880...)</label>
+      <div class="phone-wrap"><span class="phone-prefix">+</span>
+      <input class="phone-input" id="f-whatsapp" value="${esc(f.whatsapp?f.whatsapp.replace(/^880/,'01'):''||'')}" placeholder="01XXXXXXXXX" maxlength="15" inputmode="numeric"></div>
+    </div>
+  </div>
+  <div class="form-grid" style="margin-bottom:10px">
+    <div class="fg"><label>Website</label><input id="f-website" value="${esc(f.website)}" placeholder="https://..."></div>
+    <div class="fg"><label>Speed Score (0–100)</label><input id="f-speed" value="${esc(f.speed)}" placeholder="e.g. 45" type="number" min="0" max="100"></div>
+    <div class="fg"><label>Tier</label><select id="f-tier">${TIER_LIST.map(t=>`<option ${f.tier===t?'selected':''}>${t}</option>`).join('')}</select></div>
+  </div>
+  <div class="form-grid" style="margin-bottom:10px">
+    <div class="fg"><label>Status</label><select id="f-status">${STATUS_LIST.map(s=>`<option ${f.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="fg"><label>Deal Value (BDT)</label><input id="f-deal" value="${esc(f.dealBDT)}" placeholder="e.g. 15000" type="number"></div>
+    <div class="fg"><label>Last Contact</label><input id="f-lastcontact" type="date" value="${f.lastContact}"></div>
+  </div>
+  <div class="form-grid cols2" style="margin-bottom:10px">
+    <div class="fg"><label>Follow-up Date <span style="color:var(--dim)">(blank = auto +3 days)</span></label><input id="f-followup" type="date" value="${f.followUp||''}"></div>
+    <div class="fg"><label>Loom Link</label><input id="f-loom" value="${esc(f.loomLink||'')}" placeholder="https://loom.com/..."></div>
+  </div>
+  <div class="fg" style="margin-bottom:12px"><label>Notes (Bangla OK)</label><textarea id="f-notes">${esc(f.notes)}</textarea></div>
+  <div class="flex-row">
+    <button class="btn btn-green" id="btn-add-lead">+ ADD LEAD</button>
+    <button class="btn btn-ghost" id="btn-clear-form">CLEAR</button>
+  </div></div>`;
+}
+
+function buildLeads(){
+  let leads = S.leads.slice().reverse();
+  if(S.search) leads = leads.filter(l=>
+    l.name.toLowerCase().includes(S.search.toLowerCase()) ||
+    l.whatsapp.includes(S.search.replace(/\D/g,'')) ||
+    (l.industry||'').toLowerCase().includes(S.search.toLowerCase())
+  );
+  if(S.filterStatus) leads = leads.filter(l=>l.status===S.filterStatus);
+  if(S.filterTier)   leads = leads.filter(l=>l.tier===S.filterTier);
+
+  let html = `<div class="search-bar">
+    <input id="search-input" value="${esc(S.search)}" placeholder="Search name / phone / industry...">
+    <select id="filter-status"><option value="">All Status</option>${STATUS_LIST.map(s=>`<option ${S.filterStatus===s?'selected':''}>${s}</option>`).join('')}</select>
+    <select id="filter-tier"><option value="">All Tiers</option>${TIER_LIST.map(t=>`<option ${S.filterTier===t?'selected':''}>${t}</option>`).join('')}</select>
+    <button class="btn btn-green btn-sm" data-tab2="dashboard">+ Add Lead</button>
+  </div>`;
+
+  if(!leads.length) return html + `<div class="empty">No leads found. Add your first lead from the DASHBOARD tab.</div>`;
+
+  html += `<div class="card" style="padding:0;overflow:hidden"><div class="table-wrap"><table><thead><tr>
+    <th>#</th><th>Business</th><th>Industry</th><th>WhatsApp</th><th>Speed</th>
+    <th>Tier</th><th>Status</th><th>Last Contact</th><th>Follow-up</th><th>Alert</th>
+    <th>Deal (BDT)</th><th>Notes</th><th></th>
+  </tr></thead><tbody>`;
+
+  leads.forEach((l,i)=>{
+    const fu = l.followUp || autoFollowUp(l);
+    const alert = getAlert({...l, followUp: fu});
+    const wa = l.whatsapp;
+    const rowClass = alert==='TODAY'||alert==='OVERDUE' ? (alert==='OVERDUE'?'row-overdue':'row-today') : l.status==='Closed'?'row-closed':'';
+    const speedClass = l.speed ? (l.speed < 50 ? 'speed-bad' : l.speed < 70 ? 'speed-mid' : 'speed-good') : '';
+    html += `<tr class="${rowClass}">
+      <td style="color:var(--dim);font-family:var(--mono)">${S.leads.length-i}</td>
+      <td><strong style="font-size:12px">${esc(l.name)}</strong></td>
+      <td style="color:var(--muted)">${esc(l.industry||'—')}</td>
+      <td><a href="https://wa.me/${wa}" target="_blank" style="color:var(--green);font-family:var(--mono);font-size:11px">${esc(displayWA(wa))}</a></td>
+      <td class="${speedClass}" style="font-family:var(--mono)">${l.speed||'?'}</td>
+      <td><span class="badge ${BADGE[l.tier]||''}">${l.tier||'—'}</span></td>
+      <td><span class="badge ${BADGE[l.status]||''}">${l.status||'—'}</span></td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${fmtDate(l.lastContact)}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">${fmtDate(fu)}</td>
+      <td class="${alert==='TODAY'?'alert-today':alert==='OVERDUE'?'alert-overdue':'alert-ok'}">${alert==='TODAY'?'▲ TODAY':alert==='OVERDUE'?'⚠ OVERDUE':'—'}</td>
+      <td style="font-family:var(--mono);color:var(--green)">${l.dealBDT?'৳'+fmtBDT(l.dealBDT):'—'}</td>
+      <td class="note-cell">${esc(l.notes||'')}</td>
+      <td style="display:flex;gap:4px;white-space:nowrap;padding:7px 6px">
+        <button class="btn btn-ghost btn-sm" data-edit="${l.id}">Edit</button>
+        <button class="btn btn-danger btn-sm" data-del="${l.id}">Del</button>
+      </td>
+    </tr>`;
+  });
+  html += `</tbody></table></div></div>`;
+  return html;
+}
+
+function buildEditModal(){
+  const l = S.editLead;
+  const fu = l.followUp || autoFollowUp(l);
+  return `<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3>EDIT LEAD — ${esc(l.name)}</h3>
+    <div class="form-grid" style="margin-bottom:10px">
+      <div class="fg"><label>Business Name</label><input id="e-name" value="${esc(l.name)}"></div>
+      <div class="fg"><label>Industry</label><input id="e-industry" value="${esc(l.industry||'')}"></div>
+      <div class="fg"><label>WhatsApp (+880...)</label>
+        <div class="phone-wrap"><span class="phone-prefix">+</span>
+        <input class="phone-input" id="e-whatsapp" value="${esc(l.whatsapp?l.whatsapp.replace(/^880/,'01'):''||'')}" inputmode="numeric"></div>
+      </div>
+    </div>
+    <div class="form-grid" style="margin-bottom:10px">
+      <div class="fg"><label>Website</label><input id="e-website" value="${esc(l.website||'')}"></div>
+      <div class="fg"><label>Speed Score</label><input id="e-speed" value="${esc(String(l.speed||''))}" type="number" min="0" max="100"></div>
+      <div class="fg"><label>Loom Link</label><input id="e-loom" value="${esc(l.loomLink||'')}" placeholder="https://loom.com/..."></div>
+    </div>
+    <div class="form-grid" style="margin-bottom:10px">
+      <div class="fg"><label>Tier</label><select id="e-tier">${TIER_LIST.map(t=>`<option ${l.tier===t?'selected':''}>${t}</option>`).join('')}</select></div>
+      <div class="fg"><label>Status</label><select id="e-status">${STATUS_LIST.map(s=>`<option ${l.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="fg"><label>Deal (BDT)</label><input id="e-deal" value="${esc(String(l.dealBDT||''))}" type="number"></div>
+    </div>
+    <div class="form-grid cols2" style="margin-bottom:10px">
+      <div class="fg"><label>Last Contact</label><input id="e-lastcontact" type="date" value="${l.lastContact||todayStr()}"></div>
+      <div class="fg"><label>Follow-up Date <span style="color:var(--dim)">(blank = auto)</span></label><input id="e-followup" type="date" value="${l.followUp||''}"></div>
+    </div>
+    <div class="form-grid" style="margin-bottom:10px">
+      <div class="fg"><label>Pixel</label><select id="e-pixel"><option ${l.pixel==='Yes'?'selected':''}>Yes</option><option ${l.pixel==='No'?'selected':''}>No</option><option ${(!l.pixel||l.pixel==='?')?'selected':''}>?</option></select></div>
+      <div class="fg"><label>CAPI</label><select id="e-capi"><option ${l.capi==='Yes'?'selected':''}>Yes</option><option ${l.capi==='No'?'selected':''}>No</option><option ${(!l.capi||l.capi==='?')?'selected':''}>?</option></select></div>
+      <div class="fg"><label>Auto?</label><select id="e-auto"><option ${l.auto==='Yes'?'selected':''}>Yes</option><option ${l.auto==='No'?'selected':''}>No</option><option ${(!l.auto||l.auto==='?')?'selected':''}>?</option></select></div>
+    </div>
+    <div class="fg" style="margin-bottom:4px"><label>Notes</label><textarea id="e-notes" rows="3">${esc(l.notes||'')}</textarea></div>
+    <div class="modal-btns">
+      <button class="btn btn-danger btn-sm" id="btn-del-from-edit" data-del="${l.id}">Delete Lead</button>
+      <button class="btn btn-ghost" id="btn-cancel-edit">Cancel</button>
+      <button class="btn btn-green" id="btn-save-edit">SAVE CHANGES</button>
+    </div>
+  </div></div>`;
+}
+
+// ── FIX #5: Backup / Restore modal ──
+function buildBackupModal(){
+  const data = JSON.stringify(S.leads, null, 2);
+  return `<div class="modal-overlay" id="backup-overlay">
+  <div class="modal">
+    <h3>💾 BACKUP & RESTORE</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">
+      Copy the JSON below and save it somewhere safe (Google Drive, Notepad, etc).<br>
+      To restore: paste your backup JSON below and click RESTORE.
+    </p>
+    <div class="fg" style="margin-bottom:10px">
+      <label>Current data (${S.leads.length} leads) — copy this ↓</label>
+      <textarea class="backup-area" id="backup-export" readonly rows="8">${esc(data)}</textarea>
+    </div>
+    <div class="flex-row" style="margin-bottom:14px">
+      <button class="btn btn-green btn-sm" id="btn-copy-backup">Copy to Clipboard</button>
+      <button class="btn btn-ghost btn-sm" id="btn-dl-backup">↓ Download .json</button>
+    </div>
+    <div class="divider"></div>
+    <div class="fg" style="margin-top:12px;margin-bottom:10px">
+      <label>Restore from backup — paste JSON here ↓</label>
+      <textarea class="backup-area" id="backup-import" placeholder='[{"id":"...","name":"..."}]' rows="5"></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="btn-backup-close">Close</button>
+      <button class="btn btn-danger" id="btn-restore-data">⚠ RESTORE (overwrites current)</button>
+    </div>
+  </div></div>`;
+}
+
+function buildPipeline(){
+  const stages = ['New','Contacted','Replied','Meeting','Proposal','Closed','Dead','Cold'];
+  const leads = S.leads;
+  const totalRevenue = leads.filter(l=>l.status==='Closed').reduce((s,l)=>s+(Number(l.dealBDT)||0),0);
+  const totalPipeline = leads.filter(l=>l.status!=='Dead').reduce((s,l)=>s+(Number(l.dealBDT)||0),0);
+  const maxCount = Math.max(1,...stages.map(s=>leads.filter(l=>l.status===s).length));
+
+  let html = `<div class="stats cols2" style="margin-bottom:10px">
+    <div class="stat go"><div class="label">Total Revenue</div><div class="val">৳${fmtBDT(totalRevenue)}</div></div>
+    <div class="stat cyan"><div class="label">Pipeline Value</div><div class="val">৳${fmtBDT(totalPipeline)}</div></div>
+  </div>
+  <div class="card"><div class="card-head"><h2>Pipeline Funnel</h2></div><div class="funnel">`;
+
+  stages.forEach(s=>{
+    const cnt = leads.filter(l=>l.status===s).length;
+    const bdt = leads.filter(l=>l.status===s).reduce((a,l)=>a+(Number(l.dealBDT)||0),0);
+    const pct = Math.round(cnt/maxCount*100);
+    html += `<div class="funnel-row">
+      <div class="funnel-label">${s}</div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar" style="width:${pct}%;background:${FUNNEL_COLORS[s]||'#333'};min-width:${cnt>0?'24px':'0'}">${cnt>0?cnt:''}</div>
+      </div>
+      <div class="funnel-count" style="color:${FUNNEL_COLORS[s]||'#333'}">${cnt}</div>
+      <div class="funnel-bdt">${bdt>0?'৳'+fmtBDT(bdt):''}</div>
+    </div>`;
+  });
+
+  html += `</div></div>`;
+
+  // Weekly stats
+  const today = todayStr();
+  const weekAgo = addDays(today,-7);
+  const weekOutreach = leads.filter(l=>l.lastContact && l.lastContact >= weekAgo).length;
+  const monthClosed  = leads.filter(l=>l.status==='Closed').length;
+
+  html += `<div class="card"><div class="card-head"><h2>Activity</h2></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-bottom:6px">OUTREACH LAST 7 DAYS</div>
+      <div style="font-size:28px;font-weight:700;font-family:var(--mono);color:var(--blue)">${weekOutreach} <span style="font-size:12px;color:var(--muted)">leads contacted</span></div>
+    </div>
+    <div>
+      <div style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-bottom:6px">TOTAL CLOSED DEALS</div>
+      <div style="font-size:28px;font-weight:700;font-family:var(--mono);color:var(--green)">${monthClosed} <span style="font-size:12px;color:var(--muted)">deals</span></div>
+    </div>
+  </div></div>`;
+
+  return html;
+}
+
+const TEMPLATES = [
+  {title:'First Contact (with Loom)', tag:'Cold Outreach',
+   msg:`আসসালামু আলাইকুম [নাম] ভাই।\n\nআপনাদের [বিজনেস নাম]-এর website/Facebook page দেখলাম। আমি একটা ছোট্ট 2-minute video বানিয়েছি যেখানে দেখিয়েছি কীভাবে আপনাদের [specific problem: slow speed / no pixel / poor ad] ঠিক করলে বিক্রি বাড়তে পারে।\n\nদেখবেন কি? → [Loom Link]\n\nআমি [আপনার নাম] — Web & Marketing Specialist, Dhaka।`},
+  {title:'First Contact (No Loom)', tag:'Quick Pitch',
+   msg:`আসসালামু আলাইকুম [নাম] ভাই।\n\nআপনাদের website টা check করলাম — mobile-এ speed score মাত্র [X]/100। এটা sales miss করাচ্ছে।\n\nআমি এটা 48 ঘণ্টায় fix করতে পারব। একটু কথা বলা যাবে?\n\n— [আপনার নাম], Web Dev & Marketing`},
+  {title:'Follow-up (No Reply)', tag:'Day 3',
+   msg:`[নাম] ভাই, আগের message টা দেখেছেন কি?\n\nআপনাদের website-এ [issue] আছে — competitor-রা এটা already fix করছে।\n\nমাত্র 10 মিনিট call-এ আমি full plan দিতে পারব। কখন সুবিধা হবে?`},
+  {title:'Gap Discovery Script', tag:'Research Hook',
+   msg:`[নাম] ভাই,\n\nআপনাদের website check করলাম:\n❌ Mobile speed: [X]/100 (এটা sales kill করছে)\n❌ Facebook Pixel: নেই (retargeting impossible)\n❌ WhatsApp button: নেই\n\nএই 3টা fix করলে conversions 2x হতে পারে।\n\nCall দেব? আমি [আপনার নাম]।`},
+  {title:'After Meeting — Proposal Sent', tag:'Post-Meeting',
+   msg:`[নাম] ভাই, আজকের কথা ভালো লাগল।\n\nProposal পাঠিয়ে দিলাম — [Proposal Link/Amount]।\n\nকোনো question থাকলে জানান। আমরা এই সপ্তাহেই শুরু করতে পারি।`},
+  {title:'Closing — Last Follow-up', tag:'Closing',
+   msg:`[নাম] ভাই, last বার জিজ্ঞেস করছি।\n\nপ্রজেক্টটা এই সপ্তাহে শুরু করব কি? এই মাসে আর মাত্র [X] slot আছে।\n\nHa বললে আজকেই কাজ শুরু করতে পারি। 🔥`},
+];
+
+function buildMessages(){
+  let html = `<div style="display:flex;flex-direction:column;gap:10px">`;
+  TEMPLATES.forEach((t,i)=>{
+    html += `<div class="card" style="padding:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div>
+          <strong style="font-size:13px;font-family:var(--mono)">${t.title}</strong>
+          <span style="font-size:10px;color:var(--blue);background:var(--blue-bg);border:1px solid #1e3a6e;padding:2px 8px;margin-left:8px;font-family:var(--mono)">${t.tag}</span>
+        </div>
+        <button class="copy-btn" data-copy="${i}">Copy</button>
+      </div>
+      <pre style="font-size:12px;color:var(--muted);white-space:pre-wrap;font-family:var(--sans);line-height:1.7">${esc(t.msg)}</pre>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+// ── Event handling ─────────────────────────────
+function attachEvents(){
+  // Tab switching
+  document.querySelectorAll('[data-tab]').forEach(el=>{
+    el.addEventListener('click',()=>{S.tab=el.dataset.tab;render();});
+  });
+  document.querySelectorAll('[data-tab2]').forEach(el=>{
+    el.addEventListener('click',()=>{S.tab=el.dataset.tab2;render();});
+  });
+
+  // Add lead
+  document.getElementById('btn-add-lead')?.addEventListener('click', addLead);
+  document.getElementById('btn-clear-form')?.addEventListener('click',()=>{S.form=emptyForm();render();});
+
+  // Search / filter
+  const si=document.getElementById('search-input');
+  if(si) si.addEventListener('input',e=>{S.search=e.target.value;render();});
+  const fs=document.getElementById('filter-status');
+  if(fs) fs.addEventListener('change',e=>{S.filterStatus=e.target.value;render();});
+  const ft=document.getElementById('filter-tier');
+  if(ft) ft.addEventListener('change',e=>{S.filterTier=e.target.value;render();});
+
+  // Edit buttons
+  document.querySelectorAll('[data-edit]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      S.editLead = S.leads.find(l=>l.id===el.dataset.edit)||null;
+      render();
+    });
+  });
+
+  // FIX #5: Delete with confirmation
+  document.querySelectorAll('[data-del]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const l = S.leads.find(x=>x.id===el.dataset.del);
+      if(!l) return;
+      if(confirm(`Delete "${l.name}"?\n\nThis cannot be undone. Make sure you have a backup.`)){
+        S.leads = S.leads.filter(x=>x.id!==el.dataset.del);
+        S.editLead = null;
+        saveLeads(S.leads);
+        toast('Lead deleted.');
+        render();
+      }
+    });
+  });
+
+  // Edit modal save
+  document.getElementById('btn-save-edit')?.addEventListener('click', saveEdit);
+  document.getElementById('btn-cancel-edit')?.addEventListener('click',()=>{S.editLead=null;render();});
+  document.getElementById('modal-overlay')?.addEventListener('click',e=>{
+    if(e.target.id==='modal-overlay'){S.editLead=null;render();}
+  });
+
+  // Backup modal
+  document.getElementById('btn-backup-open')?.addEventListener('click',()=>{S.showBackup=true;render();});
+  document.getElementById('btn-backup-close')?.addEventListener('click',()=>{S.showBackup=false;render();});
+  document.getElementById('backup-overlay')?.addEventListener('click',e=>{
+    if(e.target.id==='backup-overlay'){S.showBackup=false;render();}
+  });
+  document.getElementById('btn-copy-backup')?.addEventListener('click',()=>{
+    const ta=document.getElementById('backup-export');
+    navigator.clipboard?.writeText(ta.value).then(()=>toast('Copied to clipboard!')).catch(()=>{ta.select();document.execCommand('copy');toast('Copied!');});
+  });
+  document.getElementById('btn-dl-backup')?.addEventListener('click', downloadBackup);
+  document.getElementById('btn-restore-data')?.addEventListener('click', restoreData);
+
+  // Export CSV
+  document.getElementById('btn-export-csv')?.addEventListener('click', exportCSV);
+
+  // Template copy
+  document.querySelectorAll('[data-copy]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const t=TEMPLATES[parseInt(el.dataset.copy)];
+      if(!t) return;
+      navigator.clipboard?.writeText(t.msg).then(()=>toast('Template copied!')).catch(()=>toast('Copy failed','err'));
+    });
+  });
+}
+
+function getFormData(){
+  const raw = document.getElementById('f-whatsapp')?.value.trim()||'';
+  // FIX #1: store as clean number string, no formula
+  const wa = normalizeWA(raw);
+  const lc = document.getElementById('f-lastcontact')?.value || todayStr();
+  const fu = document.getElementById('f-followup')?.value || '';
+  return {
+    name: document.getElementById('f-name')?.value.trim()||'',
+    industry: document.getElementById('f-industry')?.value.trim()||'',
+    whatsapp: wa,
+    website: document.getElementById('f-website')?.value.trim()||'',
+    speed: document.getElementById('f-speed')?.value||'',
+    tier: document.getElementById('f-tier')?.value||'Standard',
+    status: document.getElementById('f-status')?.value||'New',
+    dealBDT: document.getElementById('f-deal')?.value||'',
+    lastContact: lc,
+    followUp: fu,  // FIX #2: explicit follow-up date stored
+    loomLink: document.getElementById('f-loom')?.value.trim()||'',
+    notes: document.getElementById('f-notes')?.value.trim()||'',
+    pixel:'?', capi:'?', auto:'?', budget:'',
+  };
+}
+
+function addLead(){
+  const d = getFormData();
+  if(!d.name){toast('Business name is required.','err');return;}
+  d.id = uid();
+  // Preserve form data for next entry (clear name/wa for speed)
+  S.leads.push(d);
+  saveLeads(S.leads);
+  S.form = emptyForm();
+  toast(`✓ ${d.name} added!`);
+  render();
+}
+
+function saveEdit(){
+  const l = S.editLead;
+  if(!l) return;
+  const raw = document.getElementById('e-whatsapp')?.value.trim()||'';
+  const wa = normalizeWA(raw);
+  const lc = document.getElementById('e-lastcontact')?.value||todayStr();
+  const fu = document.getElementById('e-followup')?.value||'';
+  const updated = {
+    ...l,
+    name: document.getElementById('e-name')?.value.trim()||l.name,
+    industry: document.getElementById('e-industry')?.value.trim()||'',
+    whatsapp: wa,
+    website: document.getElementById('e-website')?.value.trim()||'',
+    speed: document.getElementById('e-speed')?.value||'',
+    tier: document.getElementById('e-tier')?.value||l.tier,
+    status: document.getElementById('e-status')?.value||l.status,
+    dealBDT: document.getElementById('e-deal')?.value||'',
+    lastContact: lc,
+    followUp: fu,
+    loomLink: document.getElementById('e-loom')?.value.trim()||'',
+    pixel: document.getElementById('e-pixel')?.value||'?',
+    capi: document.getElementById('e-capi')?.value||'?',
+    auto: document.getElementById('e-auto')?.value||'?',
+    notes: document.getElementById('e-notes')?.value.trim()||'',
+  };
+  S.leads = S.leads.map(x=>x.id===l.id?updated:x);
+  S.editLead = null;
+  saveLeads(S.leads);
+  toast('Changes saved.');
+  render();
+}
+
+function downloadBackup(){
+  const blob = new Blob([JSON.stringify(S.leads, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `lead_engine_backup_${todayStr()}.json`;
+  a.click();
+  toast('Backup downloaded.');
+}
+
+function restoreData(){
+  const ta = document.getElementById('backup-import');
+  if(!ta||!ta.value.trim()){toast('Paste your backup JSON first.','err');return;}
+  try{
+    const parsed = JSON.parse(ta.value.trim());
+    if(!Array.isArray(parsed)) throw new Error('Not an array');
+    if(!confirm(`Restore ${parsed.length} leads?\n\nThis will REPLACE all current data. Are you sure?`)) return;
+    S.leads = parsed;
+    S.showBackup = false;
+    saveLeads(S.leads);
+    toast(`Restored ${parsed.length} leads.`);
+    render();
+  }catch(e){
+    toast('Invalid JSON. Check your backup data.','err');
+  }
+}
+
+function exportCSV(){
+  const headers = ['#','Business Name','Industry','WhatsApp','Website','Speed','Pixel','CAPI','Auto','Budget','Tier','Loom Link','Last Contact','Follow-up','Alert','Status','Deal BDT','Notes'];
+  const rows = S.leads.map((l,i)=>{
+    const fu = l.followUp || autoFollowUp(l);
+    const alert = getAlert({...l, followUp: fu});
+    // FIX #1: Prefix with ' to prevent Excel formula interpretation
+    const safeWA = `'${displayWA(l.whatsapp)}`;
+    return [
+      i+1, l.name, l.industry||'', safeWA, l.website||'',
+      l.speed||'', l.pixel||'', l.capi||'', l.auto||'', l.budget||'',
+      l.tier||'', l.loomLink||'', fmtDate(l.lastContact), fmtDate(fu),
+      alert||'—', l.status||'', l.dealBDT||'', (l.notes||'').replace(/\n/g,' ')
+    ].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',');
+  });
+  const csv = '\uFEFF' + [headers.join(','), ...rows].join('\n'); // BOM for Excel Bengali support
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `leads_${todayStr()}.csv`;
+  a.click();
+  toast('CSV exported.');
+}
+
+let toastTimer;
+function toast(msg, type='ok'){
+  const existing = document.querySelector('.toast');
+  if(existing) existing.remove();
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.remove(), 2800);
+}
+
+// ── Boot ───────────────────────────────────────
+render();
+</script>
+</body>
+</html>
